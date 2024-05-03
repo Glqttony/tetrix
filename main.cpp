@@ -7,6 +7,11 @@
 
 #include <exception>
 
+#define BORDER_LEFT 21
+#define BORDER_RIGHT 42
+#define BORDER_BOTTOM 41
+#define BORDER_TOP 0
+
 using rgb_matrix::Canvas;
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::FrameCanvas;
@@ -31,9 +36,20 @@ int main(int argc, char *argv[]) {
 	if (matrix == NULL)
 	return 1;
 	
-	matrix->SetPixel(0, 0, 255, 0, 0);
-	matrix->SetPixel(11, 11, 0, 255, 0);
-	matrix->SetPixel(25, 25, 255, 0, 255);
+	for (int i = BORDER_TOP; i <= 20; i++) {
+		for (int j = BORDER_LEFT - 1; j <= BORDER_LEFT; j++) {
+			matrix->SetPixel(j, 2*i, 255, 255, 255);
+			matrix->SetPixel(j, 2*i + 1, 255, 255, 255);
+		}
+		for (int j = BORDER_RIGHT; j <= BORDER_RIGHT + 1; j++) {
+			matrix->SetPixel(j, 2*i, 255, 255, 255);
+			matrix->SetPixel(j, 2*i + 1, 255, 255, 255);
+		}
+	}
+	for (int i = BORDER_LEFT - 1; i <= BORDER_RIGHT + 1; i++) {
+		matrix->SetPixel(i, 42, 255, 255, 255);
+		matrix->SetPixel(i, 43, 255, 255, 255);
+	}
 
 	
 	sleep(10000);

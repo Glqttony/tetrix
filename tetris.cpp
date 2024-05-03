@@ -6,7 +6,7 @@
 
 /* Header files */
 
-#include <graphics.h>
+#include "GRAPHICS.H"
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
