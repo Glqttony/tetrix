@@ -14,9 +14,9 @@
 #define QUEUE_RIGHT 54
 #define QUEUE_TOP 1
 #define QUEUE_BOTTOM 30
-
-#define FIELD_HEIGHT 20
-#define QUEUE_HEIGHT 14
+#define HOLD_LEFT 9
+#define HOLD_TOP 1
+#define HOLD_BOTTOM 8
 
 using rgb_matrix::Canvas;
 using rgb_matrix::RGBMatrix;
@@ -53,14 +53,12 @@ int main(int argc, char *argv[]) {
 }
 
 void drawBorders(RGBMatrix *matrix) {
-	for (int i = BORDER_TOP; i <= FIELD_HEIGHT; i++) {
+	for (int i = BORDER_TOP; i <= BORDER_BOTTOM; i++) {
 		for (int j = BORDER_LEFT - 1; j <= BORDER_LEFT; j++) {
-			matrix->SetPixel(j, 2*i, 255, 255, 255);
-			matrix->SetPixel(j, 2*i + 1, 255, 255, 255);
+			matrix->SetPixel(j, i, 255, 255, 255);
 		}
 		for (int j = BORDER_RIGHT; j <= BORDER_RIGHT + 1; j++) {
-			matrix->SetPixel(j, 2*i, 255, 255, 255);
-			matrix->SetPixel(j, 2*i + 1, 255, 255, 255);
+			matrix->SetPixel(j, i, 255, 255, 255);
 		}
 	}
 	for (int i = BORDER_LEFT - 1; i <= BORDER_RIGHT + 1; i++) {
@@ -68,10 +66,9 @@ void drawBorders(RGBMatrix *matrix) {
 		matrix->SetPixel(i, BORDER_BOTTOM + 1, 255, 255, 255);
 	}
 	
-	for (int i = QUEUE_TOP; i <= QUEUE_HEIGHT; i++) {
+	for (int i = QUEUE_TOP; i <= QUEUE_BOTTOM; i++) {
 		for (int j = QUEUE_RIGHT; j <= QUEUE_RIGHT + 1; j++) {
-			matrix->SetPixel(j, 2*i, 255, 255, 255);
-			matrix->SetPixel(j, 2*i + 1, 255, 255, 255);
+			matrix->SetPixel(j, i, 255, 255, 255);
 		}
 	}
 	for (int i = BORDER_RIGHT + 1; i <= QUEUE_RIGHT + 1; i++) {
@@ -79,5 +76,17 @@ void drawBorders(RGBMatrix *matrix) {
 		matrix->SetPixel(i, 1, 255, 255, 255);
 		matrix->SetPixel(i, QUEUE_BOTTOM, 255, 255, 255);
 		matrix->SetPixel(i, QUEUE_BOTTOM + 1, 255, 255, 255);
+	}
+	
+	for (int i = HOLD_TOP; i <= HOLD_BOTTOM; i++) {
+		for (int j = HOLD_LEFT - 1; j <= HOLD_LEFT; j++) {
+			matrix->SetPixel(j, i, 255, 255, 255);
+		}
+	}
+	for (int i = HOLD_LEFT -1; i <= BORDER_LEFT; i++) {
+		matrix->SetPixel(i, 0, 255, 255, 255);
+		matrix->SetPixel(i, 1, 255, 255, 255);
+		matrix->SetPixel(i, HOLD_BOTTOM, 255, 255, 255);
+		matrix->SetPixel(i, HOLD_BOTTOM + 1, 255, 255, 255);
 	}
 }
