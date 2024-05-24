@@ -4,6 +4,9 @@
 #include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <chrono>
+#include <thread>
+#include <wiringPi.h>
 
 #include <exception>
 
@@ -22,11 +25,14 @@ using rgb_matrix::Canvas;
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::FrameCanvas;
 
+using namespace std;
+
 volatile bool interrupt_received = false;
 static void InterruptHandler(int signo) {
   interrupt_received = true;
 }
 
+void setupGPIO();
 void drawBorders(RGBMatrix *matrix);
 
 int main(int argc, char *argv[]) {
@@ -43,13 +49,29 @@ int main(int argc, char *argv[]) {
 	return 1;
 	
 	drawBorders(matrix);
+	setupGPIO();
 	
-	sleep(10000);
+	pullUpDnControl(16, PUD_UP);
+	
+	while (1) {
+		if (digitalRead(16) == 1) matrix->SetPixel(1, 1, 255, 0, 0);
+		else matrix->SetPixel(1, 1, 0, 0, 0);
+		//sleep(2);
+		this_thread::sleep_for(chrono::milliseconds(17));
+	}
+	
+	//sleep(10000);
 
 	matrix->Clear();
 	delete matrix;
 
 	return 0;
+}
+
+void setupGPIO() {
+	// setenv("WIRINGPI_GPIOMEM", "1", 1);
+	wiringPiSetupGpio();
+	pinMode(16, INPUT);
 }
 
 void drawBorders(RGBMatrix *matrix) {
